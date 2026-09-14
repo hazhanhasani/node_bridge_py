@@ -1,6 +1,6 @@
 [project]
 name = "bluepanel-node-bridge"
-version = "0.9.1"
+version = "0.10.0"
 description = "Python bridge for connecting BluePanel with BluePanel Node"
 url = "https://github.com/hazhanhasani/node_bridge_py"
 keywords = [
@@ -28,7 +28,7 @@ Homepage = "https://github.com/hazhanhasani/node_bridge_py"
 Repository = "https://github.com/hazhanhasani/node_bridge_py.git"
 
 [dependency-groups]
-dev = ["grpcio-tools>=1.80.0"]
+dev = ["grpcio-tools>=1.80.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "ruff>=0.16.6"]
 
 [tool.ruff]
 line-length = 120
@@ -36,8 +36,8 @@ exclude = ["PasarGuardNodeBridge/common"]
 
 [tool.ruff.lint]
 ignore = [
-    "N999",   # legacy implementation package keeps its historical import name for compatibility
-    "BLE001", # this is a network client library; boundaries must catch arbitrary grpc/aiohttp/ssl errors
+    "N999",
+    "BLE001",
 ]
 
 [build-system]

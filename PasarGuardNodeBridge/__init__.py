@@ -2,13 +2,12 @@
 BluePanel Node Bridge legacy compatibility implementation.
 
 New BluePanel code should import ``BluePanelNodeBridge``. This historical
-module path remains temporarily available so existing deployments can migrate
-without an immediate breaking change.
+module path remains available as a compatibility layer for existing deployments.
 
-Version: 0.9.1
+Version: 0.10.0
 """
 
-__version__ = "0.9.1"
+__version__ = "0.10.0"
 __author__ = "BluePanel"
 
 from enum import Enum
@@ -49,23 +48,10 @@ def create_node(
 ) -> PasarGuardNode:
     """Create and initialize a BluePanel Node bridge client."""
     if connection is NodeType.grpc:
-        return GrpcNode(
-            address=address,
-            port=port,
-            server_ca=server_ca,
-            api_key=api_key,
-            **kwargs,
-        )
-    elif connection is NodeType.rest:
-        return RestNode(
-            address=address,
-            port=port,
-            server_ca=server_ca,
-            api_key=api_key,
-            **kwargs,
-        )
-    else:
-        raise ValueError("invalid backend type")
+        return GrpcNode(address=address, port=port, server_ca=server_ca, api_key=api_key, **kwargs)
+    if connection is NodeType.rest:
+        return RestNode(address=address, port=port, server_ca=server_ca, api_key=api_key, **kwargs)
+    raise ValueError("invalid backend type")
 
 
 def create_node_from_config(config: NodeConfig, **runtime_overrides) -> PasarGuardNode:

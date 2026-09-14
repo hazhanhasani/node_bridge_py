@@ -8,14 +8,17 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   test:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout bridge
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Checkout canonical BluePanel Node contract
         uses: actions/checkout@v7
@@ -56,11 +59,34 @@ jobs:
       - name: Regenerate Python protobuf bindings
         run: make generate_grpc_code
 
-      - name: Verify generated bindings are committed
-        run: git diff --exit-code -- PasarGuardNodeBridge/common/service_pb2.py PasarGuardNodeBridge/common/service_pb2.pyi PasarGuardNodeBridge/common/service_grpc.py
+      - name: Stage generated bindings when needed
+        if: github.event_name != 'pull_request'
+        run: |
+          if git diff --quiet -- PasarGuardNodeBridge/common/service_pb2.py PasarGuardNodeBridge/common/service_pb2.pyi PasarGuardNodeBridge/common/service_grpc.py; then
+            echo "Generated bindings already synchronized"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PasarGuardNodeBridge/common/service_pb2.py PasarGuardNodeBridge/common/service_pb2.pyi PasarGuardNodeBridge/common/service_grpc.py
+          git commit -m "chore: regenerate BluePanel Python protocol bindings"
 
       - name: Verify BluePanel namespace
         run: uv run python -c "from BluePanelNodeBridge import BluePanelNode, Health, NodeType, create_node; from BluePanelNodeBridge.common.service_pb2 import User; print('BluePanel bridge import OK')"
 
       - name: Run tests
         run: uv run pytest
+
+      - name: Push regenerated bindings
+        if: github.event_name != 'pull_request'
+        run: |
+          if [ "$(git log -1 --pretty=%an)" != "github-actions[bot]" ]; then
+            echo "No generated binding commit to push"
+            exit 0
+          fi
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Verify PR bindings are committed
+        if: github.event_name == 'pull_request'
+        run: git diff --exit-code -- PasarGuardNodeBridge/common/service_pb2.py PasarGuardNodeBridge/common/service_pb2.pyi PasarGuardNodeBridge/common/service_grpc.py

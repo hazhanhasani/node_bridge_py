@@ -71,11 +71,24 @@ jobs:
           git add PasarGuardNodeBridge/common/service_pb2.py PasarGuardNodeBridge/common/service_pb2.pyi PasarGuardNodeBridge/common/service_grpc.py
           git commit -m "chore: regenerate BluePanel Python protocol bindings"
 
+      - name: Lint Python sources
+        run: uv run ruff check .
+
       - name: Verify BluePanel namespace
         run: uv run python -c "from BluePanelNodeBridge import BluePanelNode, Health, NodeType, create_node; from BluePanelNodeBridge.common.service_pb2 import User; print('BluePanel bridge import OK')"
 
       - name: Run tests
-        run: uv run pytest
+        run: uv run pytest -q
+
+      - name: Build distributions
+        run: uv build
+
+      - name: Verify built wheel in clean environment
+        run: |
+          python -m venv /tmp/bluepanel-bridge-wheel
+          /tmp/bluepanel-bridge-wheel/bin/pip install --upgrade pip
+          /tmp/bluepanel-bridge-wheel/bin/pip install dist/*.whl
+          /tmp/bluepanel-bridge-wheel/bin/python -c "from BluePanelNodeBridge import BluePanelNode, create_node; from BluePanelNodeBridge.common.service_pb2 import User; print('wheel import OK')"
 
       - name: Push regenerated bindings
         if: github.event_name != 'pull_request'

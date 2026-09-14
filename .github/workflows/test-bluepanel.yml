@@ -1,0 +1,35 @@
+name: Test BluePanel Node Bridge
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Sync dependencies
+        run: uv sync --group dev
+
+      - name: Verify BluePanel namespace
+        run: uv run python -c "from BluePanelNodeBridge import BluePanelNode, Health, NodeType, create_node; from BluePanelNodeBridge.common.service_pb2 import User; print('BluePanel bridge import OK')"
+
+      - name: Run tests
+        run: uv run pytest

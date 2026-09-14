@@ -14,8 +14,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout bridge
         uses: actions/checkout@v7
+
+      - name: Checkout canonical BluePanel Node contract
+        uses: actions/checkout@v7
+        with:
+          repository: hazhanhasani/node
+          ref: main
+          path: _bluepanel_node
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -27,6 +34,30 @@ jobs:
 
       - name: Sync dependencies
         run: uv sync --group dev
+
+      - name: Verify protocol contract
+        run: |
+          uv run python - <<'PY'
+          import pathlib, re
+
+          def normalize(path: str) -> str:
+              text = pathlib.Path(path).read_text(encoding="utf-8")
+              text = re.sub(r"//.*", "", text)
+              text = re.sub(r'option\s+go_package\s*=\s*"[^"]+"\s*;', "", text)
+              return re.sub(r"\s+", "", text)
+
+          canonical = normalize("_bluepanel_node/common/service.proto")
+          bridge = normalize("PasarGuardNodeBridge/common/service.proto")
+          if canonical != bridge:
+              raise SystemExit("Python bridge protocol is out of sync with hazhanhasani/node")
+          print("Protocol contract synchronized")
+          PY
+
+      - name: Regenerate Python protobuf bindings
+        run: make generate_grpc_code
+
+      - name: Verify generated bindings are committed
+        run: git diff --exit-code -- PasarGuardNodeBridge/common/service_pb2.py PasarGuardNodeBridge/common/service_pb2.pyi PasarGuardNodeBridge/common/service_grpc.py
 
       - name: Verify BluePanel namespace
         run: uv run python -c "from BluePanelNodeBridge import BluePanelNode, Health, NodeType, create_node; from BluePanelNodeBridge.common.service_pb2 import User; print('BluePanel bridge import OK')"

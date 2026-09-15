@@ -30,7 +30,13 @@ from PasarGuardNodeBridge.storage import (
     NodeRegistryProtocol,
     UserSyncStoreProtocol,
 )
+from PasarGuardNodeBridge.tor_extension import install_tor_methods
 from PasarGuardNodeBridge.utils import create_proxy, create_user
+
+# Keep the legacy implementation classes untouched while exposing the BluePanel
+# Tor contract on both transports. This preserves backwards compatibility for
+# existing deployments that still import PasarGuardNodeBridge directly.
+install_tor_methods(GrpcNode, RestNode)
 
 
 class NodeType(str, Enum):

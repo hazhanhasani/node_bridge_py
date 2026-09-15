@@ -1,0 +1,62 @@
+name: Sync BluePanel Python Protocol Bindings
+
+on:
+  push:
+    paths:
+      - PasarGuardNodeBridge/common/service.proto
+      - .github/workflows/protocol-sync.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    env:
+      BRANCH: ${{ github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Generate bindings
+        run: make generate_grpc_code
+
+      - name: Validate generated contract
+        run: |
+          uv run ruff check PasarGuardNodeBridge/tor_extension.py PasarGuardNodeBridge/__init__.py
+          uv run python - <<'PY'
+          from PasarGuardNodeBridge.common import service_pb2 as s
+          from PasarGuardNodeBridge.common import service_grpc
+          assert hasattr(s, 'TorLocation')
+          assert hasattr(s, 'TorLocationSpec')
+          assert hasattr(service_grpc.NodeServiceStub, '__init__')
+          PY
+          uv run pytest -q
+
+      - name: Commit generated bindings
+        run: |
+          if git diff --quiet -- PasarGuardNodeBridge/common/service_pb2.py PasarGuardNodeBridge/common/service_pb2.pyi PasarGuardNodeBridge/common/service_grpc.py; then
+            echo "Bindings already synchronized"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PasarGuardNodeBridge/common/service_pb2.py PasarGuardNodeBridge/common/service_pb2.pyi PasarGuardNodeBridge/common/service_grpc.py
+          git commit -m "chore: regenerate BluePanel Python protocol bindings"
+          git pull --rebase origin "$BRANCH"
+          git push origin "HEAD:$BRANCH"

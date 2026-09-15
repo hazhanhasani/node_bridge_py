@@ -26,7 +26,7 @@ jobs:
         run: uv sync --all-extras --dev
 
       - name: Generate protobuf bindings
-        run: make generate
+        run: make generate_grpc_code
 
       - name: Verify generated tree is clean
         run: git diff --exit-code

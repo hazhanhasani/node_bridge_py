@@ -90,6 +90,58 @@ class NodeServiceBase(abc.ABC):
     async def OverrideBalancerTarget(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.OverrideBalancerTargetRequest, PasarGuardNodeBridge.common.service_pb2.Empty]') -> None:
         pass
 
+    @abc.abstractmethod
+    async def ListTorLocations(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.Empty, PasarGuardNodeBridge.common.service_pb2.TorLocationsResponse]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def GetTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def CreateTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationSpec, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def UpdateTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationSpec, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def DeleteTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.DeleteTorLocationRequest, PasarGuardNodeBridge.common.service_pb2.Empty]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def EnableTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def DisableTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def RestartTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def NewTorIdentity(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def GetTorHealth(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def RepairTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def TestTorLocation(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest, PasarGuardNodeBridge.common.service_pb2.TorLocation]') -> None:
+        pass
+
+    @abc.abstractmethod
+    async def ForceReconcileTor(self, stream: 'grpclib.server.Stream[PasarGuardNodeBridge.common.service_pb2.Empty, PasarGuardNodeBridge.common.service_pb2.TorReconcileResponse]') -> None:
+        pass
+
     def __mapping__(self) -> typing.Dict[str, grpclib.const.Handler]:
         return {
             '/service.NodeService/Start': grpclib.const.Handler(
@@ -205,6 +257,84 @@ class NodeServiceBase(abc.ABC):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 PasarGuardNodeBridge.common.service_pb2.OverrideBalancerTargetRequest,
                 PasarGuardNodeBridge.common.service_pb2.Empty,
+            ),
+            '/service.NodeService/ListTorLocations': grpclib.const.Handler(
+                self.ListTorLocations,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.Empty,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationsResponse,
+            ),
+            '/service.NodeService/GetTorLocation': grpclib.const.Handler(
+                self.GetTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/CreateTorLocation': grpclib.const.Handler(
+                self.CreateTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationSpec,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/UpdateTorLocation': grpclib.const.Handler(
+                self.UpdateTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationSpec,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/DeleteTorLocation': grpclib.const.Handler(
+                self.DeleteTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.DeleteTorLocationRequest,
+                PasarGuardNodeBridge.common.service_pb2.Empty,
+            ),
+            '/service.NodeService/EnableTorLocation': grpclib.const.Handler(
+                self.EnableTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/DisableTorLocation': grpclib.const.Handler(
+                self.DisableTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/RestartTorLocation': grpclib.const.Handler(
+                self.RestartTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/NewTorIdentity': grpclib.const.Handler(
+                self.NewTorIdentity,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/GetTorHealth': grpclib.const.Handler(
+                self.GetTorHealth,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/RepairTorLocation': grpclib.const.Handler(
+                self.RepairTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/TestTorLocation': grpclib.const.Handler(
+                self.TestTorLocation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+                PasarGuardNodeBridge.common.service_pb2.TorLocation,
+            ),
+            '/service.NodeService/ForceReconcileTor': grpclib.const.Handler(
+                self.ForceReconcileTor,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                PasarGuardNodeBridge.common.service_pb2.Empty,
+                PasarGuardNodeBridge.common.service_pb2.TorReconcileResponse,
             ),
         }
 
@@ -325,4 +455,82 @@ class NodeServiceStub:
             '/service.NodeService/OverrideBalancerTarget',
             PasarGuardNodeBridge.common.service_pb2.OverrideBalancerTargetRequest,
             PasarGuardNodeBridge.common.service_pb2.Empty,
+        )
+        self.ListTorLocations = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/ListTorLocations',
+            PasarGuardNodeBridge.common.service_pb2.Empty,
+            PasarGuardNodeBridge.common.service_pb2.TorLocationsResponse,
+        )
+        self.GetTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/GetTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.CreateTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/CreateTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationSpec,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.UpdateTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/UpdateTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationSpec,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.DeleteTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/DeleteTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.DeleteTorLocationRequest,
+            PasarGuardNodeBridge.common.service_pb2.Empty,
+        )
+        self.EnableTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/EnableTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.DisableTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/DisableTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.RestartTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/RestartTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.NewTorIdentity = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/NewTorIdentity',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.GetTorHealth = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/GetTorHealth',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.RepairTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/RepairTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.TestTorLocation = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/TestTorLocation',
+            PasarGuardNodeBridge.common.service_pb2.TorLocationIDRequest,
+            PasarGuardNodeBridge.common.service_pb2.TorLocation,
+        )
+        self.ForceReconcileTor = grpclib.client.UnaryUnaryMethod(
+            channel,
+            '/service.NodeService/ForceReconcileTor',
+            PasarGuardNodeBridge.common.service_pb2.Empty,
+            PasarGuardNodeBridge.common.service_pb2.TorReconcileResponse,
         )

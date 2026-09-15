@@ -364,3 +364,123 @@ class OverrideBalancerTargetRequest(_message.Message):
     balancer_tag: str
     target: str
     def __init__(self, balancer_tag: _Optional[str] = ..., target: _Optional[str] = ...) -> None: ...
+
+class TorLocationSpec(_message.Message):
+    __slots__ = ("id", "slug", "display_name", "country_code", "enabled", "subscription_enabled", "sort_order", "base_inbound_tag", "xray_inbound_port", "xray_inbound_tag", "xray_outbound_tag", "xray_rule_tag", "tor_socks_port", "tor_control_port", "auto_repair")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    SLUG_FIELD_NUMBER: _ClassVar[int]
+    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_CODE_FIELD_NUMBER: _ClassVar[int]
+    ENABLED_FIELD_NUMBER: _ClassVar[int]
+    SUBSCRIPTION_ENABLED_FIELD_NUMBER: _ClassVar[int]
+    SORT_ORDER_FIELD_NUMBER: _ClassVar[int]
+    BASE_INBOUND_TAG_FIELD_NUMBER: _ClassVar[int]
+    XRAY_INBOUND_PORT_FIELD_NUMBER: _ClassVar[int]
+    XRAY_INBOUND_TAG_FIELD_NUMBER: _ClassVar[int]
+    XRAY_OUTBOUND_TAG_FIELD_NUMBER: _ClassVar[int]
+    XRAY_RULE_TAG_FIELD_NUMBER: _ClassVar[int]
+    TOR_SOCKS_PORT_FIELD_NUMBER: _ClassVar[int]
+    TOR_CONTROL_PORT_FIELD_NUMBER: _ClassVar[int]
+    AUTO_REPAIR_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    slug: str
+    display_name: str
+    country_code: str
+    enabled: bool
+    subscription_enabled: bool
+    sort_order: int
+    base_inbound_tag: str
+    xray_inbound_port: int
+    xray_inbound_tag: str
+    xray_outbound_tag: str
+    xray_rule_tag: str
+    tor_socks_port: int
+    tor_control_port: int
+    auto_repair: bool
+    def __init__(self, id: _Optional[str] = ..., slug: _Optional[str] = ..., display_name: _Optional[str] = ..., country_code: _Optional[str] = ..., enabled: _Optional[bool] = ..., subscription_enabled: _Optional[bool] = ..., sort_order: _Optional[int] = ..., base_inbound_tag: _Optional[str] = ..., xray_inbound_port: _Optional[int] = ..., xray_inbound_tag: _Optional[str] = ..., xray_outbound_tag: _Optional[str] = ..., xray_rule_tag: _Optional[str] = ..., tor_socks_port: _Optional[int] = ..., tor_control_port: _Optional[int] = ..., auto_repair: _Optional[bool] = ...) -> None: ...
+
+class TorLocation(_message.Message):
+    __slots__ = ("id", "slug", "display_name", "country_code", "enabled", "subscription_enabled", "sort_order", "base_inbound_tag", "xray_inbound_port", "xray_inbound_tag", "xray_outbound_tag", "xray_rule_tag", "tor_socks_port", "tor_control_port", "tor_data_directory", "desired_country", "detected_country", "detected_exit_ip", "health_status", "latency_ms", "process_status", "last_checked_at", "last_healthy_at", "last_error", "auto_repair", "restart_attempts", "created_at", "updated_at")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    SLUG_FIELD_NUMBER: _ClassVar[int]
+    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_CODE_FIELD_NUMBER: _ClassVar[int]
+    ENABLED_FIELD_NUMBER: _ClassVar[int]
+    SUBSCRIPTION_ENABLED_FIELD_NUMBER: _ClassVar[int]
+    SORT_ORDER_FIELD_NUMBER: _ClassVar[int]
+    BASE_INBOUND_TAG_FIELD_NUMBER: _ClassVar[int]
+    XRAY_INBOUND_PORT_FIELD_NUMBER: _ClassVar[int]
+    XRAY_INBOUND_TAG_FIELD_NUMBER: _ClassVar[int]
+    XRAY_OUTBOUND_TAG_FIELD_NUMBER: _ClassVar[int]
+    XRAY_RULE_TAG_FIELD_NUMBER: _ClassVar[int]
+    TOR_SOCKS_PORT_FIELD_NUMBER: _ClassVar[int]
+    TOR_CONTROL_PORT_FIELD_NUMBER: _ClassVar[int]
+    TOR_DATA_DIRECTORY_FIELD_NUMBER: _ClassVar[int]
+    DESIRED_COUNTRY_FIELD_NUMBER: _ClassVar[int]
+    DETECTED_COUNTRY_FIELD_NUMBER: _ClassVar[int]
+    DETECTED_EXIT_IP_FIELD_NUMBER: _ClassVar[int]
+    HEALTH_STATUS_FIELD_NUMBER: _ClassVar[int]
+    LATENCY_MS_FIELD_NUMBER: _ClassVar[int]
+    PROCESS_STATUS_FIELD_NUMBER: _ClassVar[int]
+    LAST_CHECKED_AT_FIELD_NUMBER: _ClassVar[int]
+    LAST_HEALTHY_AT_FIELD_NUMBER: _ClassVar[int]
+    LAST_ERROR_FIELD_NUMBER: _ClassVar[int]
+    AUTO_REPAIR_FIELD_NUMBER: _ClassVar[int]
+    RESTART_ATTEMPTS_FIELD_NUMBER: _ClassVar[int]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    slug: str
+    display_name: str
+    country_code: str
+    enabled: bool
+    subscription_enabled: bool
+    sort_order: int
+    base_inbound_tag: str
+    xray_inbound_port: int
+    xray_inbound_tag: str
+    xray_outbound_tag: str
+    xray_rule_tag: str
+    tor_socks_port: int
+    tor_control_port: int
+    tor_data_directory: str
+    desired_country: str
+    detected_country: str
+    detected_exit_ip: str
+    health_status: str
+    latency_ms: int
+    process_status: str
+    last_checked_at: int
+    last_healthy_at: int
+    last_error: str
+    auto_repair: bool
+    restart_attempts: int
+    created_at: int
+    updated_at: int
+    def __init__(self, id: _Optional[str] = ..., slug: _Optional[str] = ..., display_name: _Optional[str] = ..., country_code: _Optional[str] = ..., enabled: _Optional[bool] = ..., subscription_enabled: _Optional[bool] = ..., sort_order: _Optional[int] = ..., base_inbound_tag: _Optional[str] = ..., xray_inbound_port: _Optional[int] = ..., xray_inbound_tag: _Optional[str] = ..., xray_outbound_tag: _Optional[str] = ..., xray_rule_tag: _Optional[str] = ..., tor_socks_port: _Optional[int] = ..., tor_control_port: _Optional[int] = ..., tor_data_directory: _Optional[str] = ..., desired_country: _Optional[str] = ..., detected_country: _Optional[str] = ..., detected_exit_ip: _Optional[str] = ..., health_status: _Optional[str] = ..., latency_ms: _Optional[int] = ..., process_status: _Optional[str] = ..., last_checked_at: _Optional[int] = ..., last_healthy_at: _Optional[int] = ..., last_error: _Optional[str] = ..., auto_repair: _Optional[bool] = ..., restart_attempts: _Optional[int] = ..., created_at: _Optional[int] = ..., updated_at: _Optional[int] = ...) -> None: ...
+
+class TorLocationsResponse(_message.Message):
+    __slots__ = ("locations",)
+    LOCATIONS_FIELD_NUMBER: _ClassVar[int]
+    locations: _containers.RepeatedCompositeFieldContainer[TorLocation]
+    def __init__(self, locations: _Optional[_Iterable[_Union[TorLocation, _Mapping]]] = ...) -> None: ...
+
+class TorLocationIDRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    def __init__(self, id: _Optional[str] = ...) -> None: ...
+
+class DeleteTorLocationRequest(_message.Message):
+    __slots__ = ("id", "purge_data")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    PURGE_DATA_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    purge_data: bool
+    def __init__(self, id: _Optional[str] = ..., purge_data: _Optional[bool] = ...) -> None: ...
+
+class TorReconcileResponse(_message.Message):
+    __slots__ = ("locations",)
+    LOCATIONS_FIELD_NUMBER: _ClassVar[int]
+    locations: _containers.RepeatedCompositeFieldContainer[TorLocation]
+    def __init__(self, locations: _Optional[_Iterable[_Union[TorLocation, _Mapping]]] = ...) -> None: ...

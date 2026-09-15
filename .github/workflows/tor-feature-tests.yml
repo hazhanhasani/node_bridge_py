@@ -1,0 +1,38 @@
+name: Tor Bridge Feature Tests
+
+on:
+  push:
+    branches:
+      - "feature/bluepanel-tor-multi-exit"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Generate protobuf bindings
+        run: make generate
+
+      - name: Verify generated tree is clean
+        run: git diff --exit-code
+
+      - name: Run tests
+        run: uv run pytest -q
+
+      - name: Compile public packages
+        run: uv run python -m compileall BluePanelNodeBridge PasarGuardNodeBridge
